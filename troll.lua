@@ -246,6 +246,355 @@ createButton("🦵 DROPKICK (НОГА В ЛИЦО)", Color3.fromRGB(255, 50, 0),
     leg:Destroy()
 end)
 
+-- ====== НОВЫЕ 20 ФУНКЦИЙ ======
+
+-- КАТЕГОРИЯ: КЛОНИРОВАНИЕ
+createCategory("🧬 КЛОНИРОВАНИЕ")
+
+createButton("👥 КЛОН СЕБЯ (10 ШТ)", Color3.fromRGB(0, 200, 255), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 10 do
+        local clone = char:Clone()
+        clone.Name = "Clone_" .. i
+        clone.Parent = workspace
+        clone.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame + Vector3.new(math.random(-10, 10), 0, math.random(-10, 10))
+        clone.HumanoidRootPart.Anchored = false
+        wait(0.1)
+    end
+end)
+
+createButton("🤖 АРМИЯ КЛОНОВ (50 ШТ)", Color3.fromRGB(255, 0, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 50 do
+        local clone = char:Clone()
+        clone.Name = "Army_" .. i
+        clone.Parent = workspace
+        clone.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame + Vector3.new(math.random(-30, 30), 0, math.random(-30, 30))
+        clone.HumanoidRootPart.Anchored = false
+        wait(0.05)
+    end
+end)
+
+createButton("💥 ВЗРЫВНЫЕ КЛОНЫ", Color3.fromRGB(255, 150, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 20 do
+        local clone = char:Clone()
+        clone.Name = "BoomClone_" .. i
+        clone.Parent = workspace
+        local pos = char.HumanoidRootPart.Position + Vector3.new(math.random(-20, 20), 5, math.random(-20, 20))
+        clone.HumanoidRootPart.CFrame = CFrame.new(pos)
+        clone.HumanoidRootPart.Anchored = true
+        wait(0.1)
+        local exp = Instance.new("Explosion")
+        exp.Position = pos
+        exp.BlastRadius = 8
+        exp.BlastPressure = 50000
+        exp.Parent = workspace
+        clone:Destroy()
+    end
+end)
+
+-- КАТЕГОРИЯ: ЛАЗЕРЫ И ЛУЧИ
+createCategory("🔫 ЛАЗЕРЫ")
+
+createButton("🔴 УБИЙСТВЕННЫЙ ЛАЗЕР", Color3.fromRGB(255, 0, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    local hrp = char.HumanoidRootPart
+    
+    for i = 1, 30 do
+        local laser = Instance.new("Part")
+        laser.Size = Vector3.new(0.5, 0.5, 50)
+        laser.Position = hrp.Position + hrp.CFrame.LookVector * 25
+        laser.BrickColor = BrickColor.new("Bright red")
+        laser.Material = Enum.Material.Neon
+        laser.Anchored = true
+        laser.CanCollide = false
+        laser.Parent = workspace
+        
+        -- Убиваем всех на пути
+        for _, v in pairs(workspace:GetChildren()) do
+            if v:IsA("Model") and v:FindFirstChild("Humanoid") and v ~= char then
+                local targetHrp = v:FindFirstChild("HumanoidRootPart")
+                if targetHrp and (targetHrp.Position - hrp.Position).Magnitude < 30 then
+                    v.Humanoid.Health = 0
+                end
+            end
+        end
+        
+        wait(0.05)
+        laser:Destroy()
+    end
+end)
+
+createButton("🟢 ЛАЗЕРНЫЙ ДОЖДЬ", Color3.fromRGB(0, 255, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 50 do
+        local laser = Instance.new("Part")
+        laser.Size = Vector3.new(0.3, 0.3, 30)
+        laser.Position = Vector3.new(math.random(-50, 50), 100, math.random(-50, 50))
+        laser.BrickColor = BrickColor.new("Bright green")
+        laser.Material = Enum.Material.Neon
+        laser.Anchored = true
+        laser.CanCollide = false
+        laser.Parent = workspace
+        
+        -- Проверяем попадание
+        for _, v in pairs(workspace:GetChildren()) do
+            if v:IsA("Model") and v:FindFirstChild("Humanoid") then
+                local targetHrp = v:FindFirstChild("HumanoidRootPart")
+                if targetHrp and (targetHrp.Position - laser.Position).Magnitude < 5 then
+                    v.Humanoid.Health = 0
+                end
+            end
+        end
+        
+        wait(0.02)
+        laser:Destroy()
+    end
+end)
+
+createButton("🌈 РАДУЖНЫЙ ЛАЗЕР", Color3.fromRGB(255, 0, 255), function()
+    local char = game.Players.LocalPlayer.Character
+    local hrp = char.HumanoidRootPart
+    local colors = {"Bright red", "Bright orange", "Bright yellow", "Bright green", "Bright blue", "Bright violet"}
+    
+    for i = 1, 20 do
+        local laser = Instance.new("Part")
+        laser.Size = Vector3.new(0.5, 0.5, 40)
+        laser.Position = hrp.Position + hrp.CFrame.LookVector * 20 + Vector3.new(math.random(-5, 5), math.random(-5, 5), 0)
+        laser.BrickColor = BrickColor.new(colors[math.random(#colors)])
+        laser.Material = Enum.Material.Neon
+        laser.Anchored = true
+        laser.CanCollide = false
+        laser.Parent = workspace
+        wait(0.05)
+        laser:Destroy()
+    end
+end)
+
+-- КАТЕГОРИЯ: ГРАВИТАЦИЯ
+createCategory("🌌 ГРАВИТАЦИЯ")
+
+createButton("⬆️ ОТРИЦАТЕЛЬНАЯ ГРАВИТАЦИЯ", Color3.fromRGB(0, 200, 200), function()
+    workspace.Gravity = -50
+    wait(5)
+    workspace.Gravity = 196.2
+end)
+
+createButton("⬇️ СУПЕР ГРАВИТАЦИЯ (x10)", Color3.fromRGB(200, 0, 200), function()
+    workspace.Gravity = 1962
+    wait(3)
+    workspace.Gravity = 196.2
+end)
+
+createButton("🌀 ОТКЛЮЧИТЬ ГРАВИТАЦИЮ", Color3.fromRGB(100, 100, 255), function()
+    workspace.Gravity = 0
+    wait(5)
+    workspace.Gravity = 196.2
+end)
+
+createButton("🎯 ГРАВИТАЦИЯ К ИГРОКУ", Color3.fromRGB(255, 200, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("BasePart") and v ~= char and v.Anchored == false then
+            local bv = Instance.new("BodyVelocity")
+            bv.MaxForce = Vector3.new(100000, 100000, 100000)
+            bv.Velocity = (char.HumanoidRootPart.Position - v.Position).Unit * 50
+            bv.Parent = v
+            wait(0.1)
+            bv:Destroy()
+        end
+    end
+end)
+
+-- КАТЕГОРИЯ: МУЗЫКА И ЗВУКИ
+createCategory("🎵 МУЗЫКА")
+
+createButton("🎶 ГРОМКАЯ МУЗЫКА (ВСЕМ)", Color3.fromRGB(255, 100, 200), function()
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://1837776527"
+    sound.Volume = 10
+    sound.Looped = true
+    sound.Parent = workspace
+    sound:Play()
+    wait(10)
+    sound:Destroy()
+end)
+
+createButton("📢 РУПОР (ГРОМКИЙ ГОЛОС)", Color3.fromRGB(255, 200, 0), function()
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://9120407644"
+    sound.Volume = 10
+    sound.PlayOnRemove = true
+    sound.Parent = workspace
+    sound:Play()
+    wait(1)
+    sound:Destroy()
+end)
+
+createButton("🔊 БЕСКОНЕЧНЫЙ ЗВУК", Color3.fromRGB(200, 0, 100), function()
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://9120407644"
+    sound.Volume = 10
+    sound.Looped = true
+    sound.Parent = workspace
+    sound:Play()
+end)
+
+-- КАТЕГОРИЯ: СТИХИЙНЫЕ БЕДСТВИЯ
+createCategory("🌪️ СТИХИЯ")
+
+createButton("🌪️ ТОРНАДО", Color3.fromRGB(100, 100, 200), function()
+    local char = game.Players.LocalPlayer.Character
+    local hrp = char.HumanoidRootPart
+    
+    for i = 1, 100 do
+        local part = Instance.new("Part")
+        part.Size = Vector3.new(2, 2, 2)
+        local angle = i * 0.5
+        local radius = 5 + i * 0.1
+        part.Position = hrp.Position + Vector3.new(math.cos(angle) * radius, i * 0.5, math.sin(angle) * radius)
+        part.BrickColor = BrickColor.new("Bright blue")
+        part.Material = Enum.Material.Neon
+        part.Anchored = true
+        part.CanCollide = false
+        part.Parent = workspace
+        
+        -- Поднимаем игроков
+        for _, v in pairs(workspace:GetChildren()) do
+            if v:IsA("Model") and v:FindFirstChild("Humanoid") and v ~= char then
+                local targetHrp = v:FindFirstChild("HumanoidRootPart")
+                if targetHrp and (targetHrp.Position - hrp.Position).Magnitude < 30 then
+                    targetHrp.Velocity = Vector3.new(math.random(-30, 30), 50, math.random(-30, 30))
+                end
+            end
+        end
+        
+        wait(0.01)
+        part:Destroy()
+    end
+end)
+
+createButton("⚡ ШАРОВАЯ МОЛНИЯ", Color3.fromRGB(255, 255, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    local hrp = char.HumanoidRootPart
+    
+    local lightning = Instance.new("Part")
+    lightning.Size = Vector3.new(5, 5, 5)
+    lightning.Position = hrp.Position + Vector3.new(0, 5, 0)
+    lightning.BrickColor = BrickColor.new("Bright yellow")
+    lightning.Material = Enum.Material.Neon
+    lightning.Shape = Enum.PartType.Ball
+    lightning.Anchored = false
+    lightning.Parent = workspace
+    
+    local bv = Instance.new("BodyVelocity")
+    bv.MaxForce = Vector3.new(100000, 100000, 100000)
+    bv.Velocity = Vector3.new(math.random(-30, 30), 10, math.random(-30, 30))
+    bv.Parent = lightning
+    
+    wait(3)
+    lightning:Destroy()
+end)
+
+createButton("🌊 ЦУНАМИ", Color3.fromRGB(0, 0, 200), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 50 do
+        local wave = Instance.new("Part")
+        wave.Size = Vector3.new(100, 1, 100)
+        wave.Position = char.HumanoidRootPart.Position + Vector3.new(0, i * 0.5 - 10, 0)
+        wave.BrickColor = BrickColor.new("Bright blue")
+        wave.Material = Enum.Material.SmoothPlastic
+        wave.Transparency = 0.5
+        wave.Anchored = true
+        wave.CanCollide = true
+        wave.Parent = workspace
+        wait(0.05)
+        wave:Destroy()
+    end
+end)
+
+-- КАТЕГОРИЯ: ТРАНСФОРМАЦИЯ
+createCategory("🔄 ТРАНСФОРМАЦИЯ")
+
+createButton("🦇 СТАТЬ ЛЕТУЧЕЙ МЫШЬЮ", Color3.fromRGB(100, 0, 100), function()
+    local char = game.Players.LocalPlayer.Character
+    if char:FindFirstChild("Head") then
+        char.Head.MeshId = "rbxassetid://48728776"
+        char.Head.MeshScale = Vector3.new(3, 3, 3)
+    end
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 50
+    workspace.Gravity = 50
+end)
+
+createButton("🤖 СТАТЬ РОБОТОМ", Color3.fromRGB(0, 200, 255), function()
+    local char = game.Players.LocalPlayer.Character
+    for _, v in pairs(char:GetChildren()) do
+        if v:IsA("BasePart") then
+            v.Material = Enum.Material.SmoothPlastic
+            v.Color = Color3.fromRGB(200, 200, 200)
+        end
+    end
+    if char:FindFirstChild("Head") then
+        char.Head.MeshId = "rbxassetid://473159459"
+        char.Head.MeshScale = Vector3.new(2, 2, 2)
+    end
+end)
+
+createButton("🧛 СТАТЬ ВАМПИРОМ", Color3.fromRGB(255, 0, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    for _, v in pairs(char:GetChildren()) do
+        if v:IsA("BasePart") then
+            v.Color = Color3.fromRGB(255, 255, 255)
+            v.Transparency = 0.3
+        end
+    end
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 30
+end)
+
+-- КАТЕГОРИЯ: ФИЗИКА
+createCategory("⚡ ФИЗИКА")
+
+createButton("💫 ВЗОРВАТЬ ВСЕ ЧАСТИ", Color3.fromRGB(255, 100, 0), function()
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("BasePart") and v.Anchored == false then
+            v.Velocity = Vector3.new(math.random(-100, 100), math.random(-100, 100), math.random(-100, 100))
+            v.RotVelocity = Vector3.new(math.random(-100, 100), math.random(-100, 100), math.random(-100, 100))
+        end
+    end
+end)
+
+createButton("🧲 МАГНИТ К ИГРОКУ", Color3.fromRGB(200, 0, 200), function()
+    local char = game.Players.LocalPlayer.Character
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("BasePart") and v ~= char and v.Anchored == false then
+            local bv = Instance.new("BodyVelocity")
+            bv.MaxForce = Vector3.new(100000, 100000, 100000)
+            bv.Velocity = (char.HumanoidRootPart.Position - v.Position).Unit * 80
+            bv.Parent = v
+            wait(0.05)
+            bv:Destroy()
+        end
+    end
+end)
+
+createButton("🔄 ЗАМОРОЗИТЬ ВСЁ", Color3.fromRGB(0, 200, 255), function()
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("BasePart") and v.Anchored == false then
+            v.Anchored = true
+            v.Material = Enum.Material.Ice
+            v.Color = Color3.fromRGB(150, 200, 255)
+            v.Transparency = 0.3
+        end
+    end
+    wait(3)
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("BasePart") and v.Anchored == true then
+            v.Anchored = false
+        end
+    end
+end)
+
 -- 2. DROPKICK - ВРАЩАТЕЛЬНЫЙ
 createButton("🌀 DROPKICK СПИРАЛЬ", Color3.fromRGB(200, 100, 0), function()
     local char = game.Players.LocalPlayer.Character
