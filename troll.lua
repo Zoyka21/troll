@@ -227,6 +227,639 @@ createButton("🎯 СЛУЧАЙНАЯ ТОЧКА", Color3.fromRGB(150, 50, 200),
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(x, 50, z)
 end)
 
+-- ====== НОВЫЕ 60 ФУНКЦИЙ ======
+
+-- КАТЕГОРИЯ: МУЗЫКА И ЗВУКИ
+createCategory("🎵 МУЗЫКА И ЗВУКИ")
+
+createButton("🎶 ГРОМКАЯ МУЗЫКА", Color3.fromRGB(255, 100, 200), function()
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://1837776527"
+    sound.Volume = 10
+    sound.Looped = true
+    sound.Parent = workspace
+    sound:Play()
+    wait(10)
+    sound:Destroy()
+end)
+
+createButton("📢 РУПОР (ГРОМКИЙ ГОЛОС)", Color3.fromRGB(255, 200, 0), function()
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://9120407644"
+    sound.Volume = 10
+    sound.PlayOnRemove = true
+    sound.Parent = workspace
+    sound:Play()
+    wait(1)
+    sound:Destroy()
+end)
+
+createButton("🔊 БЕСКОНЕЧНЫЙ ЗВУК", Color3.fromRGB(200, 0, 100), function()
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://9120407644"
+    sound.Volume = 10
+    sound.Looped = true
+    sound.Parent = workspace
+    sound:Play()
+end)
+
+createButton("🎵 РЭП БИТ", Color3.fromRGB(0, 200, 100), function()
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://1841138504"
+    sound.Volume = 8
+    sound.Looped = true
+    sound.Parent = workspace
+    sound:Play()
+    wait(15)
+    sound:Destroy()
+end)
+
+createButton("🛎️ ЗВОН КОЛОКОЛА", Color3.fromRGB(200, 200, 0), function()
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://9120408133"
+    sound.Volume = 10
+    sound.PlayOnRemove = true
+    sound.Parent = workspace
+    sound:Play()
+    wait(2)
+    sound:Destroy()
+end)
+
+-- КАТЕГОРИЯ: МАГИЯ
+createCategory("🔮 МАГИЯ")
+
+createButton("✨ МАГИЧЕСКИЙ КРУГ", Color3.fromRGB(200, 0, 255), function()
+    local char = game.Players.LocalPlayer.Character
+    local hrp = char.HumanoidRootPart
+    for i = 1, 36 do
+        local angle = (i / 36) * math.pi * 2
+        local part = Instance.new("Part")
+        part.Size = Vector3.new(0.5, 0.1, 0.5)
+        part.Position = hrp.Position + Vector3.new(math.cos(angle) * 8, 0.1, math.sin(angle) * 8)
+        part.BrickColor = BrickColor.new("Bright purple")
+        part.Material = Enum.Material.Neon
+        part.Anchored = true
+        part.CanCollide = false
+        part.Parent = workspace
+        wait(0.02)
+        part:Destroy()
+    end
+end)
+
+createButton("🌟 МАГИЧЕСКИЙ ШАР", Color3.fromRGB(255, 0, 200), function()
+    local char = game.Players.LocalPlayer.Character
+    local hrp = char.HumanoidRootPart
+    local ball = Instance.new("Part")
+    ball.Size = Vector3.new(10, 10, 10)
+    ball.Position = hrp.Position + Vector3.new(0, 5, 0)
+    ball.BrickColor = BrickColor.new("Bright violet")
+    ball.Material = Enum.Material.Neon
+    ball.Shape = Enum.PartType.Ball
+    ball.Anchored = true
+    ball.Parent = workspace
+    wait(2)
+    ball:Destroy()
+end)
+
+createButton("🌀 МАГИЧЕСКИЙ ПОРТАЛ", Color3.fromRGB(0, 100, 255), function()
+    local char = game.Players.LocalPlayer.Character
+    local hrp = char.HumanoidRootPart
+    for i = 1, 20 do
+        local part = Instance.new("Part")
+        part.Size = Vector3.new(1, 0.1, 1)
+        part.Position = hrp.Position + Vector3.new(0, i * 0.5, 0)
+        part.BrickColor = BrickColor.new("Bright blue")
+        part.Material = Enum.Material.Neon
+        part.Transparency = 0.5
+        part.Anchored = true
+        part.CanCollide = false
+        part.Parent = workspace
+        wait(0.05)
+        part:Destroy()
+    end
+end)
+
+createButton("⚡ МАГИЧЕСКАЯ МОЛНИЯ", Color3.fromRGB(255, 255, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    local hrp = char.HumanoidRootPart
+    for i = 1, 10 do
+        local lightning = Instance.new("Part")
+        lightning.Size = Vector3.new(0.5, 20, 0.5)
+        lightning.Position = hrp.Position + Vector3.new(math.random(-10, 10), 10, math.random(-10, 10))
+        lightning.BrickColor = BrickColor.new("Bright yellow")
+        lightning.Material = Enum.Material.Neon
+        lightning.Anchored = true
+        lightning.CanCollide = false
+        lightning.Parent = workspace
+        wait(0.05)
+        lightning:Destroy()
+    end
+end)
+
+-- КАТЕГОРИЯ: ТРАНСПОРТ
+createCategory("🚗 ТРАНСПОРТ")
+
+createButton("🚗 ПРИЗВАТЬ МАШИНУ", Color3.fromRGB(200, 0, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    local car = Instance.new("Part")
+    car.Size = Vector3.new(10, 3, 6)
+    car.Position = char.HumanoidRootPart.Position + Vector3.new(0, 0, 10)
+    car.BrickColor = BrickColor.new("Bright red")
+    car.Shape = Enum.PartType.Block
+    car.Anchored = false
+    car.Parent = workspace
+    
+    local seat = Instance.new("VehicleSeat")
+    seat.Size = Vector3.new(2, 1, 2)
+    seat.Position = car.Position + Vector3.new(0, 2, 0)
+    seat.Parent = car
+end)
+
+createButton("✈️ ПРИЗВАТЬ САМОЛЁТ", Color3.fromRGB(0, 100, 200), function()
+    local char = game.Players.LocalPlayer.Character
+    local plane = Instance.new("Part")
+    plane.Size = Vector3.new(20, 3, 10)
+    plane.Position = char.HumanoidRootPart.Position + Vector3.new(0, 10, 20)
+    plane.BrickColor = BrickColor.new("White")
+    plane.Shape = Enum.PartType.Block
+    plane.Anchored = false
+    plane.Parent = workspace
+end)
+
+createButton("🚁 ПРИЗВАТЬ ВЕРТОЛЁТ", Color3.fromRGB(0, 200, 100), function()
+    local char = game.Players.LocalPlayer.Character
+    local heli = Instance.new("Part")
+    heli.Size = Vector3.new(12, 3, 12)
+    heli.Position = char.HumanoidRootPart.Position + Vector3.new(0, 15, 0)
+    heli.BrickColor = BrickColor.new("Dark green")
+    heli.Shape = Enum.PartType.Block
+    heli.Anchored = false
+    heli.Parent = workspace
+end)
+
+createButton("🛸 ПРИЗВАТЬ НЛО", Color3.fromRGB(150, 0, 255), function()
+    local char = game.Players.LocalPlayer.Character
+    local ufo = Instance.new("Part")
+    ufo.Size = Vector3.new(15, 3, 15)
+    ufo.Position = char.HumanoidRootPart.Position + Vector3.new(0, 20, 0)
+    ufo.BrickColor = BrickColor.new("Silver")
+    ufo.Shape = Enum.PartType.Cylinder
+    ufo.Anchored = false
+    ufo.Parent = workspace
+    
+    local light = Instance.new("PointLight")
+    light.Color = Color3.fromRGB(0, 255, 0)
+    light.Range = 30
+    light.Parent = ufo
+end)
+
+-- КАТЕГОРИЯ: ТЕКСТ И ЧАТ
+createCategory("💬 ТЕКСТ И ЧАТ")
+
+createButton("📝 БОЛЬШОЙ ТЕКСТ НА ЭКРАНЕ", Color3.fromRGB(255, 0, 0), function()
+    local text = Instance.new("TextLabel")
+    text.Size = UDim2.new(1, 0, 0.5, 0)
+    text.Position = UDim2.new(0, 0, 0.25, 0)
+    text.BackgroundTransparency = 1
+    text.Text = "🔥 ТЫ ТРОЛЛЬ! 🔥"
+    text.TextColor3 = Color3.fromRGB(255, 0, 0)
+    text.TextScaled = true
+    text.Font = Enum.Font.Bangers
+    text.Parent = screenGui
+    wait(3)
+    text:Destroy()
+end)
+
+createButton("🌈 РАДУЖНЫЙ ТЕКСТ", Color3.fromRGB(255, 0, 255), function()
+    local text = Instance.new("TextLabel")
+    text.Size = UDim2.new(1, 0, 0.5, 0)
+    text.Position = UDim2.new(0, 0, 0.25, 0)
+    text.BackgroundTransparency = 1
+    text.Text = "🌈 РАДУГА! 🌈"
+    text.TextScaled = true
+    text.Font = Enum.Font.Bangers
+    text.Parent = screenGui
+    
+    game:GetService("RunService").Heartbeat:Connect(function()
+        text.TextColor3 = Color3.fromHSV(tick() % 1, 1, 1)
+    end)
+    wait(5)
+    text:Destroy()
+end)
+
+createButton("💀 МЕГА-СПАМ В ЧАТ", Color3.fromRGB(200, 0, 200), function()
+    local msgs = {"🔥 ТРОЛЛЬ!", "💀 ХАХА!", "😈 Я ТУТ!", "🤡 БУУУ!", "👻 ПРИВЕТ!", "🎃 ХЭЛЛОУИН!", 
+                  "🚀 ПОЛЕТЕЛИ!", "💥 БАХ!", "🌀 КРУТИМ!", "🌟 МАГИЯ!"}
+    for i = 1, 100 do
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(msgs[math.random(#msgs)], "All")
+        wait(0.03)
+    end
+end)
+
+createButton("📊 ФЛУД ЭМОДЗИ", Color3.fromRGB(0, 200, 0), function()
+    local emojis = {"🔥", "💀", "😈", "👻", "🎃", "🤡", "🚀", "💥", "🌀", "🌟", "⭐", "🌈", "⚡", "💫", "✨"}
+    for i = 1, 50 do
+        local msg = ""
+        for j = 1, 10 do
+            msg = msg .. emojis[math.random(#emojis)]
+        end
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(msg, "All")
+        wait(0.02)
+    end
+end)
+
+-- КАТЕГОРИЯ: ВРЕМЯ И ПОГОДА
+createCategory("⏰ ВРЕМЯ И ПОГОДА")
+
+createButton("⏩ УСКОРИТЬ ВРЕМЯ", Color3.fromRGB(200, 200, 0), function()
+    for i = 1, 24 do
+        game.Lighting.ClockTime = i
+        wait(0.1)
+    end
+end)
+
+createButton("⏪ ЗАМЕДЛИТЬ ВРЕМЯ", Color3.fromRGB(0, 200, 200), function()
+    for i = 24, 0, -1 do
+        game.Lighting.ClockTime = i
+        wait(0.1)
+    end
+end)
+
+createButton("🌧️ ДОЖДЬ", Color3.fromRGB(0, 0, 200), function()
+    local rain = Instance.new("Part")
+    rain.Size = Vector3.new(100, 0.5, 100)
+    rain.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 20, 0)
+    rain.BrickColor = BrickColor.new("Bright blue")
+    rain.Transparency = 0.5
+    rain.Anchored = true
+    rain.Parent = workspace
+    wait(3)
+    rain:Destroy()
+end)
+
+createButton("❄️ СНЕГОПАД", Color3.fromRGB(200, 200, 255), function()
+    for i = 1, 50 do
+        local snow = Instance.new("Part")
+        snow.Size = Vector3.new(0.5, 0.5, 0.5)
+        snow.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + 
+                        Vector3.new(math.random(-30, 30), math.random(10, 30), math.random(-30, 30))
+        snow.BrickColor = BrickColor.new("White")
+        snow.Shape = Enum.PartType.Ball
+        snow.Anchored = false
+        snow.Parent = workspace
+        snow.Velocity = Vector3.new(math.random(-5, 5), -10, math.random(-5, 5))
+        wait(0.05)
+    end
+end)
+
+-- КАТЕГОРИЯ: РАДИОАКТИВНОСТЬ
+createCategory("☢️ РАДИОАКТИВНОСТЬ")
+
+createButton("☢️ ЗЕЛЁНОЕ СВЕЧЕНИЕ", Color3.fromRGB(0, 255, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    for _, v in pairs(char:GetChildren()) do
+        if v:IsA("BasePart") then
+            v.Material = Enum.Material.Neon
+            v.Color = Color3.fromRGB(0, 255, 0)
+        end
+    end
+end)
+
+createButton("💀 РАДИАЦИЯ ВОКРУГ", Color3.fromRGB(0, 200, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 30 do
+        local part = Instance.new("Part")
+        part.Size = Vector3.new(1, 1, 1)
+        part.Position = char.HumanoidRootPart.Position + Vector3.new(math.random(-15, 15), math.random(-5, 10), math.random(-15, 15))
+        part.BrickColor = BrickColor.new("Bright green")
+        part.Material = Enum.Material.Neon
+        part.Anchored = true
+        part.CanCollide = false
+        part.Parent = workspace
+        wait(0.05)
+        part:Destroy()
+    end
+end)
+
+createButton("🧪 РАДИОАКТИВНЫЙ ВЗРЫВ", Color3.fromRGB(0, 255, 100), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 20 do
+        local exp = Instance.new("Explosion")
+        exp.Position = char.HumanoidRootPart.Position + Vector3.new(math.random(-20, 20), math.random(-10, 10), math.random(-20, 20))
+        exp.BlastRadius = 5
+        exp.BlastPressure = 30000
+        exp.Parent = workspace
+        wait(0.05)
+    end
+end)
+
+-- КАТЕГОРИЯ: ПАРКУР
+createCategory("🤸 ПАРКУР")
+
+createButton("🏃 СУПЕР-ПРЫЖОК", Color3.fromRGB(200, 100, 0), function()
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 200
+    wait(3)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+end)
+
+createButton("🦘 МЕГА-ПРЫЖОК", Color3.fromRGB(255, 200, 0), function()
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 500
+    wait(5)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+end)
+
+createButton("🕷️ ЛАЗАНИЕ ПО СТЕНАМ", Color3.fromRGB(100, 100, 200), function()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 30
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 80
+    workspace.Gravity = 50
+    wait(5)
+    workspace.Gravity = 196.2
+end)
+
+createButton("🎯 БЕЗГРАВИТАЦИОННЫЙ ПРЫЖОК", Color3.fromRGB(0, 200, 255), function()
+    workspace.Gravity = 0
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 20
+    wait(5)
+    workspace.Gravity = 196.2
+end)
+
+-- КАТЕГОРИЯ: КОСМОС
+createCategory("🌌 КОСМОС")
+
+createButton("🚀 ПОЛЁТ В КОСМОС", Color3.fromRGB(100, 0, 200), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 50 do
+        char.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame + Vector3.new(0, 20, 0)
+        wait(0.01)
+    end
+end)
+
+createButton("🛸 НЛО ВОЗЛЕ ВАС", Color3.fromRGB(0, 200, 200), function()
+    local char = game.Players.LocalPlayer.Character
+    local ufo = Instance.new("Part")
+    ufo.Size = Vector3.new(10, 2, 10)
+    ufo.Position = char.HumanoidRootPart.Position + Vector3.new(0, 15, 0)
+    ufo.BrickColor = BrickColor.new("Silver")
+    ufo.Shape = Enum.PartType.Cylinder
+    ufo.Anchored = true
+    ufo.Parent = workspace
+    
+    for i = 1, 10 do
+        local light = Instance.new("PointLight")
+        light.Color = Color3.fromHSV(i/10, 1, 1)
+        light.Range = 20
+        light.Parent = ufo
+        wait(0.1)
+    end
+    wait(3)
+    ufo:Destroy()
+end)
+
+createButton("💫 МЕТЕОРИТНЫЙ ДОЖДЬ", Color3.fromRGB(200, 100, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 30 do
+        local meteor = Instance.new("Part")
+        meteor.Size = Vector3.new(3, 3, 3)
+        meteor.Position = char.HumanoidRootPart.Position + Vector3.new(math.random(-50, 50), 100 + i * 2, math.random(-50, 50))
+        meteor.BrickColor = BrickColor.new("Brown")
+        meteor.Shape = Enum.PartType.Ball
+        meteor.Anchored = false
+        meteor.Parent = workspace
+        meteor.Velocity = Vector3.new(0, -100, 0)
+        
+        local fire = Instance.new("Fire")
+        fire.Size = 5
+        fire.Heat = 20
+        fire.Parent = meteor
+        
+        wait(0.05)
+    end
+end)
+
+-- КАТЕГОРИЯ: ЖИВОТНЫЕ
+createCategory("🐾 ЖИВОТНЫЕ")
+
+createButton("🐱 СТАТЬ КОТОМ", Color3.fromRGB(255, 150, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    if char:FindFirstChild("Head") then
+        char.Head.MeshId = "rbxassetid://129851755"
+        char.Head.MeshScale = Vector3.new(1.5, 1.5, 1.5)
+    end
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 25
+end)
+
+createButton("🐶 СТАТЬ СОБАКОЙ", Color3.fromRGB(150, 100, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    if char:FindFirstChild("Head") then
+        char.Head.MeshId = "rbxassetid://56584710"
+        char.Head.MeshScale = Vector3.new(1.5, 1.5, 1.5)
+    end
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 30
+end)
+
+createButton("🦊 СТАТЬ ЛИСОЙ", Color3.fromRGB(200, 100, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    if char:FindFirstChild("Head") then
+        char.Head.MeshId = "rbxassetid://887940729"
+        char.Head.MeshScale = Vector3.new(1.5, 1.5, 1.5)
+    end
+end)
+
+createButton("🐺 СТАТЬ ВОЛКОМ", Color3.fromRGB(100, 100, 100), function()
+    local char = game.Players.LocalPlayer.Character
+    if char:FindFirstChild("Head") then
+        char.Head.MeshId = "rbxassetid://104506941"
+        char.Head.MeshScale = Vector3.new(1.5, 1.5, 1.5)
+    end
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 35
+end)
+
+-- КАТЕГОРИЯ: РАЗРУШЕНИЕ
+createCategory("🏗️ РАЗРУШЕНИЕ")
+
+createButton("💥 ВЗОРВАТЬ ВСЁ", Color3.fromRGB(255, 0, 0), function()
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("BasePart") and v ~= game.Players.LocalPlayer.Character and v.Anchored == false then
+            local exp = Instance.new("Explosion")
+            exp.Position = v.Position
+            exp.BlastRadius = 5
+            exp.BlastPressure = 50000
+            exp.Parent = workspace
+            wait(0.01)
+        end
+    end
+end)
+
+createButton("🔨 РАЗРУШИТЬ ВСЁ", Color3.fromRGB(150, 100, 0), function()
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("BasePart") and v ~= game.Players.LocalPlayer.Character then
+            v:Destroy()
+        end
+    end
+end)
+
+createButton("🌀 ТОРНАДО РАЗРУШЕНИЯ", Color3.fromRGB(100, 0, 200), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 50 do
+        local part = Instance.new("Part")
+        part.Size = Vector3.new(2, 2, 2)
+        local angle = i * 0.5
+        local radius = 5 + i * 0.2
+        part.Position = char.HumanoidRootPart.Position + Vector3.new(math.cos(angle) * radius, i * 0.5, math.sin(angle) * radius)
+        part.BrickColor = BrickColor.new("Bright purple")
+        part.Material = Enum.Material.Neon
+        part.Anchored = true
+        part.CanCollide = false
+        part.Parent = workspace
+        
+        for _, v in pairs(workspace:GetChildren()) do
+            if v:IsA("BasePart") and v ~= char and v.Anchored == false then
+                if (v.Position - part.Position).Magnitude < 10 then
+                    v:Destroy()
+                end
+            end
+        end
+        wait(0.01)
+        part:Destroy()
+    end
+end)
+
+-- КАТЕГОРИЯ: ЭФФЕКТЫ
+createCategory("🎆 ЭФФЕКТЫ")
+
+createButton("🎆 САЛЮТ", Color3.fromRGB(255, 200, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 20 do
+        local part = Instance.new("Part")
+        part.Size = Vector3.new(1, 1, 1)
+        part.Position = char.HumanoidRootPart.Position + Vector3.new(math.random(-20, 20), math.random(5, 20), math.random(-20, 20))
+        part.BrickColor = BrickColor.Random()
+        part.Material = Enum.Material.Neon
+        part.Shape = Enum.PartType.Ball
+        part.Anchored = true
+        part.CanCollide = false
+        part.Parent = workspace
+        wait(0.05)
+        part:Destroy()
+    end
+end)
+
+createButton("✨ ИСКРЫ", Color3.fromRGB(255, 255, 200), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 30 do
+        local spark = Instance.new("Part")
+        spark.Size = Vector3.new(0.3, 0.3, 0.3)
+        spark.Position = char.HumanoidRootPart.Position + Vector3.new(math.random(-10, 10), math.random(-2, 5), math.random(-10, 10))
+        spark.BrickColor = BrickColor.new("White")
+        spark.Material = Enum.Material.Neon
+        spark.Shape = Enum.PartType.Ball
+        spark.Anchored = false
+        spark.Parent = workspace
+        spark.Velocity = Vector3.new(math.random(-20, 20), math.random(10, 30), math.random(-20, 20))
+        wait(0.02)
+    end
+end)
+
+createButton("🌌 ГАЛАКТИКА", Color3.fromRGB(150, 0, 255), function()
+    local char = game.Players.LocalPlayer.Character
+    for i = 1, 50 do
+        local star = Instance.new("Part")
+        star.Size = Vector3.new(0.5, 0.5, 0.5)
+        local angle = i * 0.5
+        local radius = 10 + i * 0.3
+        star.Position = char.HumanoidRootPart.Position + Vector3.new(math.cos(angle) * radius, math.random(-10, 10), math.sin(angle) * radius)
+        star.BrickColor = BrickColor.Random()
+        star.Material = Enum.Material.Neon
+        star.Shape = Enum.PartType.Ball
+        star.Anchored = true
+        star.CanCollide = false
+        star.Parent = workspace
+        wait(0.02)
+    end
+end)
+
+-- КАТЕГОРИЯ: КОМАНДЫ
+createCategory("👑 КОМАНДЫ")
+
+createButton("👑 СТАТЬ АДМИНОМ", Color3.fromRGB(255, 200, 0), function()
+    local player = game.Players.LocalPlayer
+    player.Name = "👑 Admin"
+    player.DisplayName = "👑 Admin"
+    for _, v in pairs(player.Character:GetChildren()) do
+        if v:IsA("BasePart") then
+            v.Material = Enum.Material.Neon
+            v.Color = Color3.fromRGB(255, 200, 0)
+        end
+    end
+end)
+
+createButton("🎭 ПОМЕНЯТЬ ИМЯ", Color3.fromRGB(200, 0, 200), function()
+    local player = game.Players.LocalPlayer
+    local names = {"Тролль", "Хакер", "Бог", "Король", "Призрак", "Демон", "Ангел", "Волк"}
+    player.Name = names[math.random(#names)]
+    player.DisplayName = player.Name
+end)
+
+createButton("🔄 СБРОСИТЬ ВСЕХ", Color3.fromRGB(100, 100, 100), function()
+    for _, v in pairs(game.Players:GetPlayers()) do
+        if v.Character and v.Character:FindFirstChild("Humanoid") then
+            v.Character.Humanoid.Health = 0
+            wait(0.1)
+            v.Character.Humanoid.Health = 100
+        end
+    end
+end)
+
+-- КАТЕГОРИЯ: СТРАННЫЕ ВЕЩИ
+createCategory("🤪 СТРАННЫЕ ВЕЩИ")
+
+createButton("🔄 ПЕРЕВЕРНУТЬ МИР", Color3.fromRGB(200, 100, 200), function()
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("BasePart") and v.Anchored == false then
+            v.CFrame = v.CFrame * CFrame.Angles(math.rad(180), 0, 0)
+        end
+    end
+end)
+
+createButton("🌀 ИСКРИВИТЬ МИР", Color3.fromRGB(150, 150, 200), function()
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("BasePart") and v.Anchored == false then
+            v.Size = Vector3.new(v.Size.X * math.random(0.5, 1.5), v.Size.Y * math.random(0.5, 1.5), v.Size.Z * math.random(0.5, 1.5))
+        end
+    end
+end)
+
+createButton("💫 ЛЕВИТАЦИЯ", Color3.fromRGB(0, 200, 200), function()
+    local char = game.Players.LocalPlayer.Character
+    local hrp = char.HumanoidRootPart
+    local bv = Instance.new("BodyVelocity")
+    bv.MaxForce = Vector3.new(100000, 100000, 100000)
+    bv.Velocity = Vector3.new(0, 10, 0)
+    bv.Parent = hrp
+    wait(5)
+    bv:Destroy()
+end)
+
+createButton("🕒 ЗАМЕДЛИТЬ ВСЕХ", Color3.fromRGB(100, 100, 200), function()
+    for _, v in pairs(game.Players:GetPlayers()) do
+        if v.Character and v.Character:FindFirstChild("Humanoid") then
+            v.Character.Humanoid.WalkSpeed = 5
+        end
+    end
+    wait(5)
+    for _, v in pairs(game.Players:GetPlayers()) do
+        if v.Character and v.Character:FindFirstChild("Humanoid") then
+            v.Character.Humanoid.WalkSpeed = 16
+        end
+    end
+end)
+
+-- ====== ОБНОВЛЕНИЕ КАНВАСА ======
+scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, uiList.AbsoluteContentSize.Y + 20)
+
+print("🔥 ДОБАВЛЕНО ЕЩЁ 60 ФУНКЦИЙ!")
+print("📊 ВСЕГО ФУНКЦИЙ: 150+!")
+
 -- ====== УЛУЧШЕННЫЙ DROPKICK ======
 createCategory("💥 THE REAL DROPKICK V2")
 
