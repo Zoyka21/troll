@@ -1,392 +1,302 @@
--- Локальный скрипт для троллинга НА ТЕЛЕФОНЕ (поместите в StarterPlayerScripts)
-local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local TweenService = game:GetService("TweenService")
-local ContextActionService = game:GetService("ContextActionService")
+--[[
+  ██████  ██████  ███████  ██████  ██   ██ ██   ██  █████  ██    ██ ███████ ███    ██ 
+  ██   ██ ██   ██ ██      ██    ██ ██  ██  ██   ██ ██   ██ ██    ██ ██      ████   ██ 
+  ██████  ██████  █████   ██    ██ █████   ███████ ███████ ██    ██ █████   ██ ██  ██ 
+  ██   ██ ██   ██ ██      ██    ██ ██  ██  ██   ██ ██   ██ ██    ██ ██      ██  ██ ██ 
+  ██████  ██   ██ ███████  ██████  ██   ██ ██   ██ ██   ██  ██████  ███████ ██   ████ 
+  ============== TROLL MENU ULTRA V3 ==============
+--]]
 
-local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
-local animator = humanoid:WaitForChild("Animator")
+-- Проверка на игру
+if not game:IsLoaded() then game.Loaded:Wait() end
 
--- Переменные для мобильного управления
-local isMobile = UserInputService.TouchEnabled
-local guiEnabled = true
+-- Создание GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "TrollMenuUltra"
+screenGui.Parent = game.CoreGui
 
--- Создаем анимации
-local slapAnimation = Instance.new("Animation")
-slapAnimation.AnimationId = "rbxassetid://10468835186"
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 480, 0, 600)
+mainFrame.Position = UDim2.new(0.5, -240, 0.5, -300)
+mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+mainFrame.BackgroundTransparency = 0.15
+mainFrame.BorderSizePixel = 2
+mainFrame.BorderColor3 = Color3.fromRGB(255, 0, 100)
+mainFrame.ClipsDescendants = true
+mainFrame.Parent = screenGui
 
-local biteAnimation = Instance.new("Animation")
-biteAnimation.AnimationId = "rbxassetid://11343441594"
+-- Заголовок с анимацией
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 40)
+title.BackgroundColor3 = Color3.fromRGB(40, 0, 60)
+title.BorderSizePixel = 0
+title.Text = "🔥 TROLL MENU ULTRA 🔥"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextScaled = true
+title.Font = Enum.Font.Bangers
+title.Parent = mainFrame
 
--- Функция для поиска ближайшего игрока
-local function getNearestPlayer(maxDistance)
-    local nearestPlayer = nil
-    local shortestDistance = maxDistance
-    
-    for _, otherPlayer in ipairs(Players:GetPlayers()) do
-        if otherPlayer ~= player and otherPlayer.Character then
-            local otherHumanoid = otherPlayer.Character:FindFirstChild("Humanoid")
-            if otherHumanoid and otherHumanoid.Health > 0 then
-                local distance = (character.HumanoidRootPart.Position - otherPlayer.Character.HumanoidRootPart.Position).Magnitude
-                if distance < shortestDistance then
-                    shortestDistance = distance
-                    nearestPlayer = otherPlayer
-                end
-            end
-        end
-    end
-    
-    return nearestPlayer
-end
+-- Скроллинг-контейнер для кнопок
+local scrollingFrame = Instance.new("ScrollingFrame")
+scrollingFrame.Size = UDim2.new(1, -10, 1, -50)
+scrollingFrame.Position = UDim2.new(0, 5, 0, 45)
+scrollingFrame.BackgroundTransparency = 1
+scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+scrollingFrame.ScrollBarThickness = 6
+scrollingFrame.Parent = mainFrame
 
--- Функция 1: УДАР
-local function slapPlayer()
-    local target = getNearestPlayer(15)
-    if not target or not target.Character then
-        showNotification("Нет цели рядом! 😢")
-        return
-    end
+local uiList = Instance.new("UIListLayout")
+uiList.SortOrder = Enum.SortOrder.LayoutOrder
+uiList.Padding = UDim.new(0, 6)
+uiList.Parent = scrollingFrame
+
+-- Функция создания кнопок
+local function createButton(text, color, callback)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, -10, 0, 40)
+    btn.BackgroundColor3 = color
+    btn.BorderSizePixel = 0
+    btn.Text = text
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.TextScaled = true
+    btn.Font = Enum.Font.GothamBold
+    btn.Parent = scrollingFrame
     
-    local targetCharacter = target.Character
-    local targetHumanoid = targetCharacter:FindFirstChild("Humanoid")
-    local targetRoot = targetCharacter:FindFirstChild("HumanoidRootPart")
+    btn.MouseButton1Click:Connect(callback)
     
-    if not targetHumanoid or not targetRoot then return end
-    
-    -- Проигрываем анимацию
-    local slapTrack = animator:LoadAnimation(slapAnimation)
-    slapTrack:Play()
-    
-    -- Эффект удара
-    local sound = Instance.new("Sound")
-    sound.SoundId = "rbxassetid://9115759652"
-    sound.Parent = character.HumanoidRootPart
-    sound:Play()
-    game.Debris:AddItem(sound, 1)
-    
-    -- Визуальный эффект
-    local effect = Instance.new("Part")
-    effect.Size = Vector3.new(1, 1, 1)
-    effect.Shape = Enum.PartType.Ball
-    effect.BrickColor = BrickColor.new("Bright yellow")
-    effect.Material = Enum.Material.Neon
-    effect.Anchored = true
-    effect.CanCollide = false
-    effect.Position = targetRoot.Position
-    effect.Parent = workspace
-    
-    -- Анимация эффекта
-    spawn(function()
-        for i = 1, 10 do
-            effect.Size = effect.Size + Vector3.new(0.2, 0.2, 0.2)
-            effect.Transparency = i / 10
-            wait(0.05)
-        end
-        effect:Destroy()
+    -- Эффект наведения
+    btn.MouseEnter:Connect(function()
+        btn.BackgroundColor3 = Color3.fromRGB(
+            math.min(color.R * 255 + 50, 255),
+            math.min(color.G * 255 + 50, 255),
+            math.min(color.B * 255 + 50, 255)
+        )
+    end)
+    btn.MouseLeave:Connect(function()
+        btn.BackgroundColor3 = color
     end)
     
-    -- Отбрасываем цель
-    local direction = (targetRoot.Position - character.HumanoidRootPart.Position).Unit
-    direction = direction * Vector3.new(1, 0, 1) + Vector3.new(0, 0.7, 0)
-    
-    local bodyVelocity = Instance.new("BodyVelocity")
-    bodyVelocity.MaxForce = Vector3.new(1e6, 1e6, 1e6)
-    bodyVelocity.Velocity = direction * 60
-    bodyVelocity.P = 10000
-    bodyVelocity.Parent = targetRoot
-    
-    game.Debris:AddItem(bodyVelocity, 0.5)
-    
-    wait(0.3)
-    targetHumanoid:ChangeState(Enum.HumanoidStateType.FallingDown)
-    
-    showNotification("💥 " .. target.Name .. " отлетел!")
-    vibrateFeedback()
+    return btn
 end
 
--- Функция 2: УКУС
-local function bitePlayer()
-    local target = getNearestPlayer(8)
-    if not target or not target.Character then
-        showNotification("Нет цели рядом для укуса! 🦷")
-        return
-    end
-    
-    local targetCharacter = target.Character
-    local targetHumanoid = targetCharacter:FindFirstChild("Humanoid")
-    
-    if not targetHumanoid or targetHumanoid.Health <= 0 then return end
-    
-    -- Телепортируем цель
-    local targetRoot = targetCharacter:FindFirstChild("HumanoidRootPart")
-    if targetRoot then
-        targetRoot.CFrame = character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -2)
-    end
-    
-    -- Замораживаем
-    targetHumanoid.WalkSpeed = 0
-    targetHumanoid.JumpPower = 0
-    
-    -- Анимация укуса
-    local biteTrack = animator:LoadAnimation(biteAnimation)
-    biteTrack:Play()
-    
-    -- Звук
-    local sound = Instance.new("Sound")
-    sound.SoundId = "rbxassetid://3438514569"
-    sound.Parent = character.HumanoidRootPart
-    sound:Play()
-    game.Debris:AddItem(sound, 1)
-    
-    -- Частицы крови (много!)
-    for i = 1, 5 do
-        local blood = Instance.new("Part")
-        blood.Size = Vector3.new(0.3, 0.3, 0.3)
-        blood.BrickColor = BrickColor.new("Bright red")
-        blood.Material = Enum.Material.Neon
-        blood.Anchored = false
-        blood.CanCollide = false
-        blood.Position = targetCharacter:FindFirstChild("Head") and targetCharacter.Head.Position or targetRoot.Position
-        
-        local bloodMesh = Instance.new("SpecialMesh", blood)
-        bloodMesh.MeshType = Enum.MeshType.Sphere
-        
-        blood.Parent = workspace
-        
-        -- Разлетаются в разные стороны
-        local bv = Instance.new("BodyVelocity")
-        bv.MaxForce = Vector3.new(1e6, 1e6, 1e6)
-        bv.Velocity = Vector3.new(math.random(-10, 10), math.random(5, 15), math.random(-10, 10))
-        bv.Parent = blood
-        
-        game.Debris:AddItem(blood, 1)
-        game.Debris:AddItem(bv, 0.5)
-    end
-    
-    -- Эффект скримера (тёмный экран на долю секунды)
-    local screamer = Instance.new("Frame")
-    screamer.Size = UDim2.new(1, 0, 1, 0)
-    screamer.BackgroundColor3 = Color3.new(1, 0, 0)
-    screamer.BackgroundTransparency = 0.7
-    screamer.Parent = player:WaitForChild("PlayerGui")
-    
-    spawn(function()
-        for i = 1, 5 do
-            screamer.BackgroundTransparency = 0.7 - (i * 0.1)
-            wait(0.05)
+-- ====== ОГРОМНОЕ ТРОЛЛ МЕНЮ ======
+
+-- 1. Телепорты
+createButton("🚀 ТЕЛЕПОРТ К ИГРОКАМ", Color3.fromRGB(200, 0, 0), function()
+    local players = game.Players:GetPlayers()
+    for i, v in ipairs(players) do
+        if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0, 2, 0)
+            break
         end
-        wait(0.1)
-        screamer:Destroy()
-    end)
-    
-    wait(0.5)
-    targetHumanoid.Health = 0
-    
-    showNotification("🦷 " .. target.Name .. " был убит укусом!")
-    vibrateFeedback()
-end
-
--- Функция вибрации телефона
-function vibrateFeedback()
-    if UserInputService.VibrationEnabled then
-        UserInputService.VibrationEnabled = true
-        -- Встроенная вибрация при активации
     end
-end
+end)
 
--- Функция показа уведомлений
-function showNotification(text)
-    -- Удаляем старые уведомления
-    if player.PlayerGui:FindFirstChild("Notification") then
-        player.PlayerGui.Notification:Destroy()
+createButton("🌀 ТЕЛЕПОРТ В НЕБО (ВЫСОТА)", Color3.fromRGB(0, 100, 200), function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 500, 0)
+end)
+
+createButton("🌊 ТЕЛЕПОРТ ПОД ВОДУ", Color3.fromRGB(0, 50, 150), function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, -50, 0)
+end)
+
+-- 2. Анимации
+createButton("💃 ТАНЕЦ (DANCE)", Color3.fromRGB(255, 100, 0), function()
+    game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Instance.new("Animation"))
+end)
+
+createButton("🤸 ФЛИП В ВОЗДУХЕ", Color3.fromRGB(150, 0, 255), function()
+    for i = 1, 10 do
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, 0, math.rad(36))
+        wait(0.05)
     end
-    
-    local notification = Instance.new("Frame")
-    notification.Name = "Notification"
-    notification.Size = UDim2.new(0, 250, 0, 50)
-    notification.Position = UDim2.new(0.5, -125, 0, 20)
-    notification.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    notification.BackgroundTransparency = 0.2
-    notification.Parent = player:WaitForChild("PlayerGui")
-    
-    local notifText = Instance.new("TextLabel")
-    notifText.Size = UDim2.new(1, -10, 1, -10)
-    notifText.Position = UDim2.new(0, 5, 0, 5)
-    notifText.Text = text
-    notifText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    notifText.BackgroundTransparency = 1
-    notifText.TextScaled = true
-    notifText.Font = Enum.Font.GothamBold
-    notifText.Parent = notification
-    
-    -- Плавное появление и исчезновение
-    notification.BackgroundTransparency = 1
-    local tweenIn = TweenService:Create(notification, TweenInfo.new(0.3), {BackgroundTransparency = 0.2})
-    tweenIn:Play()
-    
+end)
+
+createButton("😵 ГОЛОВА КРУГОМ", Color3.fromRGB(255, 0, 200), function()
+    for i = 1, 20 do
+        game.Players.LocalPlayer.Character.Head.CFrame = game.Players.LocalPlayer.Character.Head.CFrame * CFrame.Angles(0, math.rad(18), 0)
+        wait(0.05)
+    end
+end)
+
+-- 3. Взрывные эффекты
+createButton("💥 ВЗРЫВ РЯДОМ", Color3.fromRGB(255, 150, 0), function()
+    local explosion = Instance.new("Explosion")
+    explosion.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
+    explosion.BlastRadius = 15
+    explosion.BlastPressure = 100000
+    explosion.Parent = workspace
+end)
+
+createButton("🔥 ОГНЕННЫЙ ШАР", Color3.fromRGB(255, 50, 0), function()
+    local fire = Instance.new("Fire")
+    fire.Size = 15
+    fire.Heat = 20
+    fire.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
     wait(2)
-    local tweenOut = TweenService:Create(notification, TweenInfo.new(0.5), {BackgroundTransparency = 1})
-    tweenOut:Play()
-    wait(0.5)
-    notification:Destroy()
-end
+    fire:Destroy()
+end)
 
--- СОЗДАНИЕ МОБИЛЬНОГО UI
-local function createMobileUI()
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "TrollingUI"
-    screenGui.ResetOnSpawn = false
-    screenGui.Parent = player:WaitForChild("PlayerGui")
-    
-    -- Главная кнопка (меню)
-    local menuButton = Instance.new("TextButton")
-    menuButton.Size = UDim2.new(0, 60, 0, 60)
-    menuButton.Position = UDim2.new(0, 20, 0.8, -30)
-    menuButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    menuButton.BackgroundTransparency = 0.3
-    menuButton.Text = "👊"
-    menuButton.TextScaled = true
-    menuButton.Font = Enum.Font.SourceSans
-    menuButton.Parent = screenGui
-    
-    -- Делаем кнопку круглой
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(1, 0)
-    corner.Parent = menuButton
-    
-    -- Кнопка удара
-    local slapButton = Instance.new("TextButton")
-    slapButton.Size = UDim2.new(0, 150, 0, 150)
-    slapButton.Position = UDim2.new(0.3, -75, 0.5, -75)
-    slapButton.BackgroundColor3 = Color3.fromRGB(255, 100, 0)
-    slapButton.BackgroundTransparency = 0.3
-    slapButton.Text = "💥\nУДАР"
-    slapButton.TextScaled = true
-    slapButton.Font = Enum.Font.GothamBold
-    slapButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    slapButton.Visible = false
-    slapButton.Parent = screenGui
-    
-    local slapCorner = Instance.new("UICorner")
-    slapCorner.CornerRadius = UDim.new(1, 0)
-    slapCorner.Parent = slapButton
-    
-    -- Кнопка укуса
-    local biteButton = Instance.new("TextButton")
-    biteButton.Size = UDim2.new(0, 150, 0, 150)
-    biteButton.Position = UDim2.new(0.7, -75, 0.5, -75)
-    biteButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-    biteButton.BackgroundTransparency = 0.3
-    biteButton.Text = "🦷\nУКУС"
-    biteButton.TextScaled = true
-    biteButton.Font = Enum.Font.GothamBold
-    biteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    biteButton.Visible = false
-    biteButton.Parent = screenGui
-    
-    local biteCorner = Instance.new("UICorner")
-    biteCorner.CornerRadius = UDim.new(1, 0)
-    biteCorner.Parent = biteButton
-    
-    -- Заголовок
-    local title = Instance.new("TextLabel")
-    title.Size = UDim2.new(0, 300, 0, 30)
-    title.Position = UDim2.new(0.5, -150, 0.3, -15)
-    title.Text = "🎭 ТРОЛЛИНГ МЕНЮ 🎭"
-    title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    title.BackgroundTransparency = 0.5
-    title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    title.TextScaled = true
-    title.Font = Enum.Font.GothamBlack
-    title.Visible = false
-    title.Parent = screenGui
-    
-    local titleCorner = Instance.new("UICorner")
-    titleCorner.CornerRadius = UDim.new(0.3, 0)
-    titleCorner.Parent = title
-    
-    -- Переключение меню
-    local menuOpen = false
-    
-    menuButton.MouseButton1Click:Connect(function()
-        menuOpen = not menuOpen
-        slapButton.Visible = menuOpen
-        biteButton.Visible = menuOpen
-        title.Visible = menuOpen
-        
-        -- Анимация кнопки меню
-        if menuOpen then
-            menuButton.Text = "❌"
-        else
-            menuButton.Text = "👊"
+-- 4. Изменение персонажа
+createButton("📏 СДЕЛАТЬ ГИГАНТОМ (x5)", Color3.fromRGB(0, 200, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    for _, v in pairs(char:GetChildren()) do
+        if v:IsA("BasePart") then
+            v.Size = v.Size * 5
         end
-    end)
-    
-    -- Функционал кнопок
-    slapButton.MouseButton1Click:Connect(function()
-        slapPlayer()
-    end)
-    
-    biteButton.MouseButton1Click:Connect(function()
-        bitePlayer()
-    end)
-    
-    -- Поддержка перетаскивания кнопки меню
-    local dragging = false
-    local dragStart = nil
-    local startPos = nil
-    
-    menuButton.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            dragStart = input.Position
-            startPos = menuButton.Position
-        end
-    end)
-    
-    menuButton.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.Touch then
-            dragging = false
-        end
-    end)
-    
-    UserInputService.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.Touch then
-            local delta = input.Position - dragStart
-            menuButton.Position = UDim2.new(
-                startPos.X.Scale,
-                startPos.X.Offset + delta.X,
-                startPos.Y.Scale,
-                startPos.Y.Offset + delta.Y
-            )
-        end
-    end)
-end
-
--- Также добавляем поддержку клавиатуры для игры на ПК/планшете
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed then return end
-    
-    if input.KeyCode == Enum.KeyCode.E then
-        slapPlayer()
-    elseif input.KeyCode == Enum.KeyCode.Q then
-        bitePlayer()
     end
 end)
 
--- Инициализация при загрузке персонажа
-player.CharacterAdded:Connect(function(newCharacter)
-    character = newCharacter
-    humanoid = character:WaitForChild("Humanoid")
-    animator = humanoid:WaitForChild("Animator")
+createButton("🐭 СДЕЛАТЬ МАЛЕНЬКИМ", Color3.fromRGB(0, 100, 0), function()
+    local char = game.Players.LocalPlayer.Character
+    for _, v in pairs(char:GetChildren()) do
+        if v:IsA("BasePart") then
+            v.Size = v.Size * 0.2
+        end
+    end
 end)
 
--- Создаем мобильный UI
-createMobileUI()
+createButton("👻 СТАТЬ ПРИЗРАКОМ", Color3.fromRGB(100, 0, 150), function()
+    local char = game.Players.LocalPlayer.Character
+    for _, v in pairs(char:GetChildren()) do
+        if v:IsA("BasePart") then
+            v.Transparency = 0.7
+            v.Material = Enum.Material.Neon
+        end
+    end
+end)
 
-print("📱 Мобильный троллинг скрипт загружен!")
-print("Нажмите кнопку 👊 для открытия меню")
-print("E - УДАР | Q - УКУС (для ПК)")
+-- 5. Троллинг других
+createButton("🚗 ПРИЗВАТЬ МАШИНУ НА ИГРОКА", Color3.fromRGB(0, 0, 200), function()
+    local players = game.Players:GetPlayers()
+    for i, v in ipairs(players) do
+        if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+            local vehicle = Instance.new("Part")
+            vehicle.Size = Vector3.new(10, 3, 6)
+            vehicle.Position = v.Character.HumanoidRootPart.Position + Vector3.new(0, 5, 0)
+            vehicle.Anchored = true
+            vehicle.BrickColor = BrickColor.Random()
+            vehicle.Parent = workspace
+            wait(0.5)
+            vehicle.Anchored = false
+            break
+        end
+    end
+end)
+
+createButton("💩 БРОСАТЬ КАКАШКИ", Color3.fromRGB(100, 50, 0), function()
+    local poop = Instance.new("Part")
+    poop.Size = Vector3.new(1, 0.5, 1)
+    poop.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 1, 0)
+    poop.BrickColor = BrickColor.new("Brown")
+    poop.Shape = Enum.PartType.Ball
+    poop.Parent = workspace
+    poop.Velocity = Vector3.new(math.random(-50, 50), 30, math.random(-50, 50))
+end)
+
+-- 6. Звуки и визуал
+createButton("📢 ГРОМКИЙ ЗВУК (ВСЕМ)", Color3.fromRGB(200, 200, 0), function()
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://9120407644"
+    sound.Volume = 10
+    sound.PlayOnRemove = true
+    sound.Parent = workspace
+    sound:Play()
+    wait(1)
+    sound:Destroy()
+end)
+
+createButton("🌈 РАДУГА ВОКРУГ", Color3.fromRGB(255, 0, 255), function()
+    for i = 1, 30 do
+        local part = Instance.new("Part")
+        part.Size = Vector3.new(1, 1, 1)
+        part.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + 
+                        Vector3.new(math.random(-20, 20), math.random(-20, 20), math.random(-20, 20))
+        part.BrickColor = BrickColor.Random()
+        part.Anchored = true
+        part.Parent = workspace
+        wait(0.1)
+        part:Destroy()
+    end
+end)
+
+-- 7. Бесконечные трюки
+createButton("♾️ БЕСКОНЕЧНЫЙ ПОЛЕТ", Color3.fromRGB(0, 200, 200), function()
+    local char = game.Players.LocalPlayer.Character
+    local hrp = char.HumanoidRootPart
+    local bodyVel = Instance.new("BodyVelocity")
+    bodyVel.MaxForce = Vector3.new(100000, 100000, 100000)
+    bodyVel.Velocity = Vector3.new(0, 50, 0)
+    bodyVel.Parent = hrp
+    wait(5)
+    bodyVel:Destroy()
+end)
+
+createButton("🔄 ВРАЩЕНИЕ МИРА", Color3.fromRGB(150, 150, 0), function()
+    for i = 1, 360, 5 do
+        workspace.CurrentCamera.CFrame = workspace.CurrentCamera.CFrame * CFrame.Angles(0, math.rad(5), 0)
+        wait(0.02)
+    end
+end)
+
+-- 8. Изменение времени суток
+createButton("🌙 НОЧЬ (ТЕМНОТА)", Color3.fromRGB(0, 0, 50), function()
+    game.Lighting.Brightness = 0
+    game.Lighting.ClockTime = 0
+    game.Lighting.FogEnd = 100
+    game.Lighting.FogColor = Color3.fromRGB(0, 0, 0)
+end)
+
+createButton("☀️ ДЕНЬ", Color3.fromRGB(255, 200, 0), function()
+    game.Lighting.Brightness = 2
+    game.Lighting.ClockTime = 14
+    game.Lighting.FogEnd = 1000
+    game.Lighting.FogColor = Color3.fromRGB(200, 200, 200)
+end)
+
+-- 9. Спам
+createButton("💬 СПАМ В ЧАТ (ТРОЛЛЬ)", Color3.fromRGB(200, 0, 200), function()
+    for i = 1, 20 do
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Я ТРОЛЛЬ! 🤪", "All")
+        wait(0.1)
+    end
+end)
+
+createButton("👾 СПАМ ЭМОДЗИ", Color3.fromRGB(0, 200, 100), function()
+    for i = 1, 30 do
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("😈👻💀👽🤖🎃", "All")
+        wait(0.05)
+    end
+end)
+
+-- 10. Удаление и сброс
+createButton("🗑️ УДАЛИТЬ ВСЕ ЧАСТИ", Color3.fromRGB(100, 0, 0), function()
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("BasePart") and v ~= game.Players.LocalPlayer.Character then
+            v:Destroy()
+        end
+    end
+end)
+
+createButton("🔄 СБРОС ПЕРСОНАЖА", Color3.fromRGB(50, 50, 50), function()
+    game.Players.LocalPlayer.Character.Humanoid.Health = 0
+end)
+
+-- Переключатель видимости GUI
+createButton("❌ ЗАКРЫТЬ МЕНЮ", Color3.fromRGB(100, 0, 0), function()
+    screenGui.Enabled = false
+end)
+
+-- Горячая клавиша для показа/скрытия (Insert)
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.Insert then
+        screenGui.Enabled = not screenGui.Enabled
+    end
+end)
+
+-- Обновление размера Canvas
+scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, uiList.AbsoluteContentSize.Y + 10)
+
+print("🔥 TROLL MENU ULTRA ЗАГРУЖЕН! Нажми INSERT чтобы скрыть/показать.")
